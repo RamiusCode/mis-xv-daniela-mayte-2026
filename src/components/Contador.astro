@@ -1,0 +1,176 @@
+---
+// Contador.astro
+---
+
+<section class="py-4 px-6 sm:px-8 md:px-12 lg:px-16 relative">
+
+  <!-- Título -->
+  <div class="text-center mb-5" id="titulo-contador">
+    <h2 class="font-great-vibes text-4xl md:text-5xl text-[#D4AF37]">Faltan</h2>
+    <p class="font-charm text-base md:text-lg text-[#eb8fa3]/80 mt-1">Para mi gran día</p>
+  </div>
+
+  <div class="max-w-xl mx-auto relative">
+
+    <!-- Flores laterales -->
+    <div class="absolute -left-12 sm:-left-20 md:-left-28 top-1/2 -translate-y-1/2 pointer-events-none z-0" id="flor-lateral-izq">
+      <img src="/imagenes/FlorLateral.webp" alt="Flores izquierda" class="w-14 sm:w-18 md:w-24 h-auto object-contain scale-x-[-1]" />
+    </div>
+    <div class="absolute -right-12 sm:-right-20 md:-right-28 top-1/2 -translate-y-1/2 pointer-events-none z-0" id="flor-lateral-der">
+      <img src="/imagenes/FlorLateral.webp" alt="Flores derecha" class="w-14 sm:w-18 md:w-24 h-auto object-contain" />
+    </div>
+
+    <!-- CARD -->
+    <div
+      class="relative z-10 rounded-3xl bg-gradient-to-b from-white via-[#fff5f8] to-white shadow-2xl overflow-hidden"
+      id="card-contador"
+      style="border: 2px solid #D4AF37;"
+    >
+      <div class="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/70 to-transparent pointer-events-none z-0 rounded-t-3xl"></div>
+      <div class="absolute top-3 left-3 w-7 h-7 border-t-2 border-l-2 border-[#D4AF37]/60 pointer-events-none"></div>
+      <div class="absolute top-3 right-3 w-7 h-7 border-t-2 border-r-2 border-[#D4AF37]/60 pointer-events-none"></div>
+      <div class="absolute bottom-3 left-3 w-7 h-7 border-b-2 border-l-2 border-[#D4AF37]/60 pointer-events-none"></div>
+      <div class="absolute bottom-3 right-3 w-7 h-7 border-b-2 border-r-2 border-[#D4AF37]/60 pointer-events-none"></div>
+
+      <div class="relative z-10 px-6 py-5 md:px-8 md:py-6">
+
+        <!-- Separador superior -->
+        <div class="flex items-center gap-2 mb-5" id="sep-top">
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent to-[#eb8fa3]/50"></div>
+          <svg class="w-3.5 h-3.5 text-[#eb8fa3] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <div class="flex-1 h-px bg-gradient-to-l from-transparent to-[#eb8fa3]/50"></div>
+        </div>
+
+        <!-- NÚMEROS LIBRES -->
+        <div class="flex items-end justify-center gap-1 sm:gap-2" id="contador-container">
+
+          <!-- DÍAS -->
+          <div class="flex flex-col items-center grupo-numero w-14 sm:w-16 md:w-20">
+            <span class="font-charm text-4xl sm:text-5xl md:text-6xl font-normal text-[#D4AF37] leading-none" id="dias">00</span>
+            <div class="w-full h-px bg-gradient-to-r from-transparent via-[#D4AF37]/60 to-transparent mt-1 mb-1.5"></div>
+            <span class="font-charm text-xs sm:text-sm text-[#eb8fa3] font-bold uppercase tracking-widest">Días</span>
+          </div>
+
+          <!-- Separador : -->
+          <span class="font-charm text-3xl sm:text-4xl md:text-5xl font-normal text-[#D4AF37]/60 leading-none pb-6">:</span>
+
+          <!-- HORAS -->
+          <div class="flex flex-col items-center grupo-numero w-14 sm:w-16 md:w-20">
+            <span class="font-charm text-4xl sm:text-5xl md:text-6xl font-normal text-[#D4AF37] leading-none" id="horas">00</span>
+            <div class="w-full h-px bg-gradient-to-r from-transparent via-[#D4AF37]/60 to-transparent mt-1 mb-1.5"></div>
+            <span class="font-charm text-xs sm:text-sm text-[#eb8fa3] font-bold uppercase tracking-widest">Horas</span>
+          </div>
+
+          <!-- Separador : -->
+          <span class="font-charm text-3xl sm:text-4xl md:text-5xl font-normal text-[#D4AF37]/60 leading-none pb-6">:</span>
+
+          <!-- MINUTOS -->
+          <div class="flex flex-col items-center grupo-numero w-14 sm:w-16 md:w-20">
+            <span class="font-charm text-4xl sm:text-5xl md:text-6xl font-normal text-[#D4AF37] leading-none" id="minutos">00</span>
+            <div class="w-full h-px bg-gradient-to-r from-transparent via-[#D4AF37]/60 to-transparent mt-1 mb-1.5"></div>
+            <span class="font-charm text-xs sm:text-sm text-[#eb8fa3] font-bold uppercase tracking-widest">Minutos</span>
+          </div>
+
+          <!-- Separador : -->
+          <span class="font-charm text-3xl sm:text-4xl md:text-5xl font-normal text-[#D4AF37]/60 leading-none pb-6">:</span>
+
+          <!-- SEGUNDOS -->
+          <div class="flex flex-col items-center grupo-numero w-14 sm:w-16 md:w-20">
+            <span class="font-charm text-4xl sm:text-5xl md:text-6xl font-normal text-[#D4AF37] leading-none" id="segundos">00</span>
+            <div class="w-full h-px bg-gradient-to-r from-transparent via-[#D4AF37]/60 to-transparent mt-1 mb-1.5"></div>
+            <span class="font-charm text-xs sm:text-sm text-[#eb8fa3] font-bold uppercase tracking-widest">Segundos</span>
+          </div>
+
+        </div>
+
+        <!-- Separador inferior -->
+        <div class="flex items-center gap-2 mt-5" id="sep-bot">
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent to-[#eb8fa3]/50"></div>
+          <svg class="w-3.5 h-3.5 text-[#eb8fa3] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <div class="flex-1 h-px bg-gradient-to-l from-transparent to-[#eb8fa3]/50"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (typeof window !== 'undefined') {
+    document.addEventListener("DOMContentLoaded", () => {
+
+      const fechaEvento = new Date("2026-06-20T19:00:00").getTime();
+
+      function actualizarContador() {
+        const ahora = new Date().getTime();
+        const dif   = fechaEvento - ahora;
+
+        const diasEl    = document.getElementById("dias");
+        const horasEl   = document.getElementById("horas");
+        const minutosEl = document.getElementById("minutos");
+        const segsEl    = document.getElementById("segundos");
+
+        if (dif > 0) {
+          const d = Math.floor(dif / 86400000);
+          const h = Math.floor((dif % 86400000) / 3600000);
+          const m = Math.floor((dif % 3600000)  / 60000);
+          const s = Math.floor((dif % 60000)    / 1000);
+          if (diasEl)    diasEl.textContent    = String(d).padStart(2, "0");
+          if (horasEl)   horasEl.textContent   = String(h).padStart(2, "0");
+          if (minutosEl) minutosEl.textContent = String(m).padStart(2, "0");
+          if (segsEl)    segsEl.textContent    = String(s).padStart(2, "0");
+        } else {
+          [diasEl, horasEl, minutosEl, segsEl].forEach(el => { if (el) el.textContent = "00"; });
+        }
+      }
+
+      actualizarContador();
+      setInterval(actualizarContador, 1000);
+
+      // Estado inicial
+      gsap.set("#titulo-contador",  { opacity: 0, y: -20 });
+      gsap.set("#flor-lateral-izq", { opacity: 0, x: -60 });
+      gsap.set("#flor-lateral-der", { opacity: 0, x: 60 });
+      gsap.set("#card-contador",    { opacity: 0, y: 35, scale: 0.96 });
+      gsap.set("#sep-top, #sep-bot",{ opacity: 0, scaleX: 0 });
+      gsap.set(".grupo-numero",     { opacity: 0, y: 18 });
+
+      ScrollTrigger.create({
+        trigger: "#card-contador",
+        start: "top 85%",
+        end: "top 20%",
+        onEnter: () => {
+          const tl = gsap.timeline();
+
+          tl.to("#titulo-contador", { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" })
+            .to("#card-contador",   { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "back.out(1.3)" }, "-=0.3")
+            .to("#flor-lateral-izq",{ opacity: 1, x: 0, duration: 0.8, ease: "power2.out" }, "-=0.5")
+            .to("#flor-lateral-der",{ opacity: 1, x: 0, duration: 0.8, ease: "power2.out" }, "<")
+            .to("#sep-top, #sep-bot",{ opacity: 1, scaleX: 1, duration: 0.5, ease: "power2.out" }, "-=0.4")
+            .to(".sep-corazon",     { opacity: 1, duration: 0.4 }, "<")
+            .to(".grupo-numero",    { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.4)", stagger: 0.1 }, "-=0.2");
+
+          // Corazones latiendo
+        },
+        onLeaveBack: () => {
+          gsap.set("#titulo-contador",  { opacity: 0, y: -20 });
+          gsap.set("#flor-lateral-izq", { opacity: 0, x: -60 });
+          gsap.set("#flor-lateral-der", { opacity: 0, x: 60 });
+          gsap.set("#card-contador",    { opacity: 0, y: 35, scale: 0.96 });
+          gsap.set("#sep-top, #sep-bot",{ opacity: 0, scaleX: 0 });
+          gsap.set(".grupo-numero",     { opacity: 0, y: 18 });
+        },
+      });
+    });
+  }
+</script>

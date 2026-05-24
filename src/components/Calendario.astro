@@ -1,0 +1,218 @@
+---
+// Calendario.astro
+---
+
+<section class="py-4 px-6 sm:px-8 md:px-12 lg:px-16">
+  <div class="max-w-xl mx-auto relative">
+
+    <!-- Flores laterales -->
+    <div class="absolute -left-12 sm:-left-20 md:-left-28 top-1/2 -translate-y-1/2 pointer-events-none z-0" id="flores-cal-izq">
+      <img src="/imagenes/FlorLateral.webp" alt="Flores" class="w-20 sm:w-28 md:w-36 h-auto object-contain scale-x-[-1]" />
+    </div>
+    <div class="absolute -right-12 sm:-right-20 md:-right-28 top-1/2 -translate-y-1/2 pointer-events-none z-0" id="flores-cal-der">
+      <img src="/imagenes/FlorLateral.webp" alt="Flores" class="w-20 sm:w-28 md:w-36 h-auto object-contain" />
+    </div>
+
+    <!-- CARD PRINCIPAL -->
+    <div
+      class="relative z-10 rounded-3xl bg-gradient-to-b from-white via-[#fff5f8] to-white shadow-2xl overflow-hidden"
+      id="calendario-card"
+      style="border: 2px solid #D4AF37;"
+    >
+      <!-- Destello superior -->
+      <div class="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/70 to-transparent pointer-events-none rounded-t-3xl z-0"></div>
+
+      <!-- Esquinas decorativas doradas -->
+      <div class="absolute top-3 left-3 w-7 h-7 border-t-2 border-l-2 border-[#D4AF37]/60 pointer-events-none"></div>
+      <div class="absolute top-3 right-3 w-7 h-7 border-t-2 border-r-2 border-[#D4AF37]/60 pointer-events-none"></div>
+      <div class="absolute bottom-3 left-3 w-7 h-7 border-b-2 border-l-2 border-[#D4AF37]/60 pointer-events-none"></div>
+      <div class="absolute bottom-3 right-3 w-7 h-7 border-b-2 border-r-2 border-[#D4AF37]/60 pointer-events-none"></div>
+
+      <div class="relative z-10 p-4 md:p-6">
+
+        <!-- CABECERA: mariposas + mes/año -->
+        <div class="flex items-center justify-center gap-3 mb-3" id="titulo-mes-container">
+          <div id="mariposa-cal-izq">
+            <img src="/imagenes/mariposa.png" alt="Mariposa" class="w-8 h-8 md:w-10 md:h-10 object-contain" />
+          </div>
+          <h3 class="font-charm text-2xl md:text-3xl text-[#D4AF37] font-bold" id="nombre-mes"></h3>
+          <div id="mariposa-cal-der">
+            <img src="/imagenes/mariposa.png" alt="Mariposa" class="w-8 h-8 md:w-10 md:h-10 object-contain scale-x-[-1]" />
+          </div>
+        </div>
+
+        <!-- Separador con corazón -->
+        <div class="flex items-center gap-2 mb-3" id="separador-cal">
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent to-[#eb8fa3]/50"></div>
+          <svg class="w-4 h-4 text-[#eb8fa3] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <div class="flex-1 h-px bg-gradient-to-l from-transparent to-[#eb8fa3]/50"></div>
+        </div>
+
+        <!-- DÍAS DE LA SEMANA -->
+        <div class="grid grid-cols-7 gap-1 mb-2">
+          <div class="text-center font-charm text-base md:text-lg text-[#eb8fa3]/80 font-bold pb-1">Dom</div>
+          <div class="text-center font-charm text-base md:text-lg text-[#eb8fa3]/80 font-bold pb-1">Lun</div>
+          <div class="text-center font-charm text-base md:text-lg text-[#eb8fa3]/80 font-bold pb-1">Mar</div>
+          <div class="text-center font-charm text-base md:text-lg text-[#eb8fa3]/80 font-bold pb-1">Mié</div>
+          <div class="text-center font-charm text-base md:text-lg text-[#eb8fa3]/80 font-bold pb-1">Jue</div>
+          <div class="text-center font-charm text-base md:text-lg text-[#eb8fa3]/80 font-bold pb-1">Vie</div>
+          <div class="text-center font-charm text-base md:text-lg text-[#eb8fa3]/80 font-bold pb-1">Sáb</div>
+        </div>
+
+        <!-- Línea bajo días de semana -->
+        <div class="w-full h-px bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent mb-3"></div>
+
+        <!-- DÍAS DEL MES -->
+        <div class="grid grid-cols-7 gap-1" id="dias-container"></div>
+
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const DIA_ESPECIAL = 20;
+  const MES_ESPECIAL = 6;
+  const AÑO_ESPECIAL = 2026;
+
+  const NOMBRES_MESES = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+
+  function generarCalendario() {
+    const nombreMes = document.getElementById('nombre-mes');
+    if (nombreMes) nombreMes.textContent = `${NOMBRES_MESES[MES_ESPECIAL - 1]} ${AÑO_ESPECIAL}`;
+
+    const primerDia = new Date(AÑO_ESPECIAL, MES_ESPECIAL - 1, 1).getDay();
+    const ultimoDia = new Date(AÑO_ESPECIAL, MES_ESPECIAL, 0).getDate();
+    const diasContainer = document.getElementById('dias-container');
+    if (!diasContainer) return;
+
+    diasContainer.innerHTML = '';
+
+    for (let i = 0; i < primerDia; i++) {
+      diasContainer.appendChild(document.createElement('div'));
+    }
+
+    for (let dia = 1; dia <= ultimoDia; dia++) {
+      const diaDiv = document.createElement('div');
+
+      if (dia === DIA_ESPECIAL) {
+        diaDiv.className = 'dia-calendario flex items-center justify-center aspect-square';
+        diaDiv.id = 'dia-especial';
+        diaDiv.innerHTML = `
+          <div class="relative flex items-center justify-center w-9 h-9 md:w-11 md:h-11 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#e8c55a] to-[#c9a55e] shadow-lg ring-2 ring-[#D4AF37]/40 ring-offset-2 ring-offset-white">
+            <span class="font-charm text-lg md:text-xl text-white font-bold leading-none">${dia}</span>
+          </div>
+        `;
+      } else {
+        diaDiv.className = 'dia-calendario flex items-center justify-center aspect-square rounded-full hover:bg-[#eb8fa3]/10 transition-all duration-200 cursor-default';
+        diaDiv.innerHTML = `<span class="font-charm text-sm md:text-base text-gray-500">${dia}</span>`;
+      }
+
+      diasContainer.appendChild(diaDiv);
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    document.addEventListener("DOMContentLoaded", () => {
+      generarCalendario();
+
+      // Estado inicial
+      gsap.set("#flores-cal-izq", { opacity: 0, x: -50 });
+      gsap.set("#flores-cal-der", { opacity: 0, x: 50 });
+      gsap.set("#calendario-card", { opacity: 0, y: 40, scale: 0.96 });
+      gsap.set("#mariposa-cal-izq", { opacity: 0, x: -20 });
+      gsap.set("#mariposa-cal-der", { opacity: 0, x: 20 });
+      gsap.set("#nombre-mes", { opacity: 0 });
+      gsap.set("#separador-cal", { opacity: 0, scaleX: 0 });
+      gsap.set(".dia-calendario", { opacity: 0, scale: 0.7 });
+
+      ScrollTrigger.create({
+        trigger: "#calendario-card",
+        start: "top 85%",
+        end: "top 20%",
+        onEnter: () => animarCalendario(),
+        onLeaveBack: () => ocultarCalendario(),
+      });
+
+      function animarCalendario() {
+        gsap.to("#calendario-card",  { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(1.3)" });
+        gsap.to("#flores-cal-izq",   { opacity: 1, x: 0,           duration: 0.7, ease: "power2.out" });
+        gsap.to("#flores-cal-der",   { opacity: 1, x: 0,           duration: 0.7, ease: "power2.out" });
+        gsap.to("#mariposa-cal-izq", { opacity: 1, x: 0,           duration: 0.7, ease: "power2.out" });
+        gsap.to("#mariposa-cal-der", { opacity: 1, x: 0,           duration: 0.7, ease: "power2.out" });
+        gsap.to("#nombre-mes",       { opacity: 1,                  duration: 0.7, ease: "power2.out" });
+        gsap.to("#separador-cal",    { opacity: 1, scaleX: 1,       duration: 0.7, ease: "power2.out" });
+        gsap.to(".dia-calendario",   { opacity: 1, scale: 1,        duration: 0.4, ease: "back.out(1.5)", stagger: { each: 0.025, from: "start" } });
+
+        // Mariposas volando
+        volarMariposa('izq');
+        volarMariposa('der');
+
+        // Día especial pulsando
+        gsap.to("#dia-especial .rounded-full", {
+          boxShadow: "0 0 20px rgba(212,175,55,0.7), 0 0 40px rgba(212,175,55,0.3)",
+          scale: 1.08,
+          duration: 1.8,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          delay: 1,
+        });
+      }
+
+      function volarMariposa(lado: string) {
+        const id = `#mariposa-cal-${lado}`;
+        const dirX = lado === 'izq' ? 8 : -8;
+        const rot = lado === 'izq' ? 10 : -10;
+
+        gsap.to(id, {
+          y: -16, duration: 2.2, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 0.4,
+        });
+        gsap.to(id, {
+          x: dirX, duration: 3, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 0.4,
+        });
+        gsap.to(id, {
+          rotation: rot, duration: 2.6, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 0.4,
+        });
+        gsap.to(id, {
+          scaleX: 0.45, duration: 0.38, ease: "power1.inOut", yoyo: true, repeat: -1, delay: 0.9,
+        });
+      }
+
+      function ocultarCalendario() {
+        gsap.set("#flores-cal-izq", { opacity: 0, x: -50 });
+        gsap.set("#flores-cal-der", { opacity: 0, x: 50 });
+        gsap.set("#calendario-card", { opacity: 0, y: 40, scale: 0.96 });
+        gsap.set("#mariposa-cal-izq", { opacity: 0, x: -20 });
+        gsap.set("#mariposa-cal-der", { opacity: 0, x: 20 });
+        gsap.set("#nombre-mes", { opacity: 0 });
+        gsap.set("#separador-cal", { opacity: 0, scaleX: 0 });
+        gsap.set(".dia-calendario", { opacity: 0, scale: 0.7 });
+      }
+    });
+  }
+</script>
+
+<style>
+  #dia-especial .rounded-full {
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.5);
+    transition: transform 0.3s ease;
+  }
+
+  .dia-calendario:not(#dia-especial):hover span {
+    color: #eb8fa3;
+    font-weight: bold;
+  }
+</style>
